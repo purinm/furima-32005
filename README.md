@@ -2,16 +2,16 @@
 
 ## users テーブル
 
-| Column         | Type   | Options                   |
-| -------------- | ------ | ------------------------- |
-| nickname       | string | null: false, unique: true |
-| email          | string | null: false, unique: true |
-| password       | string | null: false               |
-| first_name     | string | null: false               |
-| last_name      | string | null: false               |
-| first_furigana | string | null: false               |
-| last_furigana  | string | null: false               |
-| birthday       | date   | null: false               |
+| Column             | Type   | Options                   |
+| ------------------ | ------ | ------------------------- |
+| nickname           | string | null: false, unique: true |
+| email              | string | null: false, unique: true |
+| encrypted_password | string | null: false               |
+| first_name         | string | null: false               |
+| last_name          | string | null: false               |
+| first_furigana     | string | null: false               |
+| last_furigana      | string | null: false               |
+| birthday           | date   | null: false               |
 
 ### Association
 
@@ -21,17 +21,17 @@
 
 ## items テーブル
 
-| Column       | Type       | Options                         |
-| ------------ | ---------- | ------------------------------- |
-| seller       | references | null: false , foreign_key: true |
-| item_name    | string     | null: false                     |
-| description  | text       | null: false, foreign_key: true  |
-| category     | integer    | null: false, foreign_key: true  |
-| condition    | integer    | null: false, foreign_key: true  |
-| delivery_fee | integer    | null: false, foreign_key: true  |
-| days_to_sip  | integer    | null: false, foreign_key: true  |
-| prefectures  | integer    | null: false, foreign_key: true  |
-| cost         | integer    | null: false                     |
+| Column          | Type       | Options                         |
+| --------------- | ---------- | ------------------------------- |
+| user            | references | null: false , foreign_key: true |
+| item_name       | string     | null: false                     |
+| description     | text       | null: false, foreign_key: true  |
+| category_id     | integer    | null: false, foreign_key: true  |
+| condition_id    | integer    | null: false, foreign_key: true  |
+| delivery_fee_id | integer    | null: false, foreign_key: true  |
+| days_to_sip_id  | integer    | null: false, foreign_key: true  |
+| prefectures_id  | integer    | null: false, foreign_key: true  |
+| cost            | integer    | null: false                     |
 
 ### Association
 
@@ -45,32 +45,31 @@
 
 ## purchases テーブル
 
-| Column        | Type       | Options                        |
-| ------------- | ---------- | ------------------------------ |
-| buyer         | references | null: false, foreign_key: true |
-| purchase_item | references | null: false, foreign_key: true |
-| date          | text       | null: false, foreign_key: true |
+| Column  | Type       | Options                        |
+| ------- | ---------- | ------------------------------ |
+| user    | references | null: false, foreign_key: true |
+| item    | references | null: false, foreign_key: true |
+| address | references | null: false, foreign_key: true |
 
 ### Association
 
 - belongs_to :user
-- belongs_to :address
+- has_one :address
 - belongs_to :item
 
 ## addresses テーブル
 
-| Column       | Type       | Options                        |
-| ------------ | ---------- | ------------------------------ |
-| zip_code     | integer    | null: false                    |
-| prefectures  | string     | null: false, foreign_key: true |
-| city         | string     | null: false                    |
-| street       | string     | null: false                    |
-| building     | string     |
-| phone_number | integer    | null: false                    |
-| item         | references | null: false, foreign_key: true |
+| Column       | Type    | Options                        |
+| ------------ | ------- | ------------------------------ |
+| zip_code     | string  | null: false                    |
+| prefectures  | integer | null: false, foreign_key: true |
+| city         | string  | null: false                    |
+| street       | string  | null: false                    |
+| building     | string  |
+| phone_number | string  | null: false                    |
 
 ### Association
 
-- has_one :purchase
+- belongs_to :purchase
 - belongs_to :user
 - has_one_active_hash :prefectures
