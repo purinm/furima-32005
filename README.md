@@ -1,24 +1,76 @@
-# README
+# テーブル設計
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+## users テーブル
 
-Things you may want to cover:
+| Column         | Type   | Options                   |
+| -------------- | ------ | ------------------------- |
+| nickname       | string | null: false, unique: true |
+| email          | string | null: false, unique: true |
+| password       | string | null: false               |
+| first_name     | string | null: false               |
+| last_name      | string | null: false               |
+| first_furigana | string | null: false               |
+| last_furigana  | string | null: false               |
+| birthday       | date   | null: false               |
 
-* Ruby version
+### Association
 
-* System dependencies
+- has_many :items
+- has_many :purchases
+- has_many :addresses
 
-* Configuration
+## items テーブル
 
-* Database creation
+| Column       | Type       | Options                         |
+| ------------ | ---------- | ------------------------------- |
+| seller       | references | null: false , foreign_key: true |
+| item_name    | string     | null: false                     |
+| description  | text       | null: false, foreign_key: true  |
+| category     | integer    | null: false, foreign_key: true  |
+| condition    | integer    | null: false, foreign_key: true  |
+| delivery_fee | integer    | null: false, foreign_key: true  |
+| days_to_sip  | integer    | null: false, foreign_key: true  |
+| prefectures  | integer    | null: false, foreign_key: true  |
+| cost         | integer    | null: false                     |
 
-* Database initialization
+### Association
 
-* How to run the test suite
+- belongs_to :user
+- has_one :purchase
+- belongs_to_active_hash :category
+- belongs_to_active_hash :condition
+- belongs_to_active_hash :delivery_fee
+- belongs_to_active_hash :days_to_sip
+- belongs_to_active_hash :prefectures
 
-* Services (job queues, cache servers, search engines, etc.)
+## purchases テーブル
 
-* Deployment instructions
+| Column        | Type       | Options                        |
+| ------------- | ---------- | ------------------------------ |
+| buyer         | references | null: false, foreign_key: true |
+| purchase_item | references | null: false, foreign_key: true |
+| date          | text       | null: false, foreign_key: true |
 
-* ...
+### Association
+
+- belongs_to :user
+- belongs_to :address
+- belongs_to :item
+
+## addresses テーブル
+
+| Column       | Type       | Options                        |
+| ------------ | ---------- | ------------------------------ |
+| zip_code     | integer    | null: false                    |
+| prefectures  | string     | null: false, foreign_key: true |
+| city         | string     | null: false                    |
+| street       | string     | null: false                    |
+| building     | string     |
+| phone_number | integer    | null: false                    |
+| item         | references | null: false, foreign_key: true |
+
+### Association
+
+- has_one :purchase
+- belongs_to :user
+- has_one_active_hash :prefectures
