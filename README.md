@@ -17,7 +17,6 @@
 
 - has_many :items
 - has_many :purchases
-- has_many :addresses
 
 ## items テーブル
 
@@ -45,11 +44,10 @@
 
 ## purchases テーブル
 
-| Column  | Type       | Options                        |
-| ------- | ---------- | ------------------------------ |
-| user    | references | null: false, foreign_key: true |
-| item    | references | null: false, foreign_key: true |
-| address | references | null: false                    |
+| Column | Type       | Options                        |
+| ------ | ---------- | ------------------------------ |
+| user   | references | null: false, foreign_key: true |
+| item   | references | null: false, foreign_key: true |
 
 ### Association
 
@@ -71,5 +69,4 @@
 ### Association
 
 - belongs_to :purchase
-- belongs_to :user
 - has_one_active_hash :prefecture
