@@ -9,10 +9,11 @@ class User < ApplicationRecord
 
   validates :nickname, presence: true
 
-  validates :password, confirmation: true, 
-             format: { with: /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i,
-                       message: 'は半角英数字混合で作成してください' }
-
+  
+  validates :password,presence: true, confirmation: true, length: { minimum: 6 , message: "6文字以上入力してください" },
+             format: { with: /\A(?=.*?[a-zA-Z])(?=.*?\d)[a-zA-Z\d]{6,}\z/,
+             message: "は英数字混合で入力してください"} 
+  
   with_options presence:true,
     format: { with: /\A[ぁ-んァ-ン一-龥]+\z/,
             message: 'は全角文字を使用してください' } do
