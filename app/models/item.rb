@@ -13,6 +13,9 @@ class Item < ApplicationRecord
   validates :condition_id, presence: true, numericality: { other_than: 1 }
 
   belongs_to_active_hash :delivery_fee
+  extend ActiveHash::Associations::ActiveRecordExtensions
+  validates :delivery_fee_id, presence: true, numericality: { other_than: 1 }
+
   belongs_to_active_hash :days_to_sip
   belongs_to_active_hash :prefectures
 end
