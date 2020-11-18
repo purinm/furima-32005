@@ -2,17 +2,16 @@ class Item < ApplicationRecord
   extend ActiveHash::Associations::ActiveRecordExtensions
 
   belongs_to :user
-  has_one :purchase
+  # has_one :purchase
   has_one_attached :image
 
   with_options presence: true do
-    validates :user
+    validates :name
     validates :description
     validates :image
     validates :cost
   end
 
-  #ジャンルの選択が「--」の時は保存できないようにする
   with_options presence: true, numericality: { other_than: 1 } do
     validates :category_id
     validates :condition_id
@@ -27,8 +26,6 @@ class Item < ApplicationRecord
   belongs_to_active_hash :days_to_sip
   belongs_to_active_hash :prefecture
 
-  # validates :cost, presence: true,
-  #                  numericality: { only_integer: true, greater_than: 299, less_than: 10000000 },
-  #                  format: { with: /\A(?=.*?\d)\d\z/ }
-  validates_inclusion_of :cost, in: 300..9_999_999, message: "Out of setting range"
+  validates :cost, numericality: { with: /\A[0-9]+\z/, message: 'は半角数字で入力してください' }
+  validates :cost, inclusion: { in: 300..9_999_999, message: 'は300~9.999.999円までの範囲で入力してくだい' }
 end
