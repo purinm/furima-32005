@@ -2,7 +2,7 @@ class ItemsController < ApplicationController
   before_action :authenticate_user!, except: [:index, :show]
 
   def index
-    @items = Item.all.order(created_at: :desc)
+    # @items = Item.all.order(created_at: :desc)
   end
 
   def new
@@ -15,11 +15,11 @@ class ItemsController < ApplicationController
       @item.save
       return redirect_to root_path
     end
-    render 'new'
+    render "new"
   end
 
   def show
-    @item = Item.find(params[:id])
+    # @item = Item.find(params[:id])
   end
 
   private
