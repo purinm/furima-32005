@@ -55,12 +55,9 @@ RSpec.describe Item, type: :model do
     @item.valid?
     expect(@item.errors.full_messages).to include("Cost can't be blank")
   end
-  it '価格の範囲が、¥300~¥9,999,999の間であること' do
-    @item.cost = '1000'
-    @item.valid?
-  end
+ 
   it '価格の範囲が、300円未満で登録できないこと' do
-    @item.cost = '100'
+    @item.cost = '299'
     @item.valid?
     expect(@item.errors.full_messages).to include('Cost は300~9.999.999円までの範囲で入力してくだい')
   end
@@ -75,4 +72,31 @@ RSpec.describe Item, type: :model do
     @item.valid?
     expect(@item.errors.full_messages).to include('Cost は半角数字で入力してください')
   end
+  it 'カテゴリーに--を選択すると登録できないこと' do
+    @item.category_id = 1
+    @item.valid?
+    expect(@item.errors.full_messages).to include('Category must be other than 1')
+  end
+  it '商品の状態に--を選択すると登録できないこと' do
+    @item.condition_id = 1
+    @item.valid?
+    expect(@item.errors.full_messages).to include('Condition must be other than 1')
+  end
+  it '配送料の負担に--を選択すると登録できないこと' do
+    @item.delivery_fee_id = 1
+    @item.valid?
+    expect(@item.errors.full_messages).to include('Delivery fee must be other than 1')
+  end
+  it '発送元の地域に--を選択すると登録できないこと' do
+    @item.prefecture_id = 1
+    @item.valid?
+    expect(@item.errors.full_messages).to include('Prefecture must be other than 1')
+  end
+  it '発送までの日数に--を選択すると登録できないこと' do
+    @item.days_to_sip_id = 1
+    @item.valid?
+    expect(@item.errors.full_messages).to include('Days to sip must be other than 1')
+  end
+
+
 end
