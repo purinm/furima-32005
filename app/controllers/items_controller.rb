@@ -3,6 +3,7 @@ class ItemsController < ApplicationController
 
   def index
     @items = Item.all.order(created_at: :desc)
+    # @purchase = Purchase.find(params[:item_id])
   end
 
   def new
