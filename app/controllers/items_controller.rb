@@ -15,7 +15,7 @@ class ItemsController < ApplicationController
       @item.save
       return redirect_to root_path
     end
-    render "new"
+    render 'new'
   end
 
   def show

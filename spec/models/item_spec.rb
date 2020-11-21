@@ -55,7 +55,7 @@ RSpec.describe Item, type: :model do
     @item.valid?
     expect(@item.errors.full_messages).to include("Cost can't be blank")
   end
- 
+
   it '価格の範囲が、300円未満で登録できないこと' do
     @item.cost = '299'
     @item.valid?
@@ -97,6 +97,4 @@ RSpec.describe Item, type: :model do
     @item.valid?
     expect(@item.errors.full_messages).to include('Days to sip must be other than 1')
   end
-
-
 end
