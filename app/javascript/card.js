@@ -1,43 +1,41 @@
 const pay = () => {
-  // JavaScriptで環境変数を呼び込み
-  Payjp.setPublicKey(process.env.PAYJP_PUBLIC_KEY);
-  // Payjp.setPublicKey(pk_test_50c8d07153ef36fbc7a44dc4); // PAY.JPテスト公開鍵
+  Payjp.setPublicKey(process.env.PAYJP_PUBLIC_KEY); // PAY.JPテスト公開鍵のセット クレカ情報をPAYJP送信時に必須
+     
  
-  const form = document.getElementById("charge-form");
-  form.addEventListener("submit", (e) => {
-    e.preventDefault();
+  const form = document.getElementById("charge-form");  //フォームの全体の要素取得
+  form.addEventListener("submit", (e) => {     //送信するとイベント発火
+    e.preventDefault(); //デフォルトの送信キャンセル
 
- // フォームの情報を取得し、それをFormDataオブジェクトとして生成
-    const formResult = document.getElementById("charge-form");
-    const formData = new FormData(formResult);
-
-    // クレジットカードに関する情報を取得し、変数cardに代入
+    const formResult = document.getElementById("charge-form"); // フォームの要素を取得しformResultに入れる
+    const formData = new FormData(formResult);  //jsで扱えるようにするFormDataオブジェクトとして生成
+    
+    // クレカ情報を取得し、変数cardに代入
     const card = {
-      number: formData.get("order[number]"),
-      cvc: formData.get("order[cvc]"),
-      exp_month: formData.get("order[exp_month]"),
-      exp_year: `20${formData.get("order[exp_year]")}`,
+      number: formData.get("purchase_address[number]"),
+      cvc: formData.get("purchase_address[cvc]"),
+      exp_month: formData.get("purchase_address[exp_month]"),
+      exp_year: `20${formData.get("purchase_address[exp_year]")}`,
     };
-
+    // console.log(card);
+   
     // カード情報をPAY.JP側に送りトークン化
     // 第一引数：PAY.JP側に送るカードの情報＝カード情報のオブジェクト 
     // 第二引数：PAY.JP側からトークンが送付された後に実行する処理を、アロー関数を用いた即時関数で記入
     Payjp.createToken(card, (status, response) => {
-      if (status == 200) {
-        const token = response.id;
-        // トークンの値をフォームに含める
+      // debugger;
+      if (status == 200) {  //送信成功したら
+        const token = response.id;  // トークンの値を取得フォームに追加していく
         const renderDom = document.getElementById("charge-form");
-        // トークンの値を非表示
-        const tokenObj = `<input value=${token} name='token' type="hidden"> `;
+        const tokenObj = `<input value=${token} name='token' type="hidden"> `;   // inputタグ作成トークンの値を非表示
         renderDom.insertAdjacentHTML("beforeend", tokenObj);
-        // debugger;
+      // debugger;
       }
       // クレジットカードの情報を削除
-      document.getElementById("order_number").removeAttribute("name");
-      document.getElementById("order_cvc").removeAttribute("name");
-      document.getElementById("order_exp_month").removeAttribute("name");
-      document.getElementById("order_exp_year").removeAttribute("name");
-  // フォームの情報をサーバーサイドに送信
+      document.getElementById("card-number").removeAttribute("name");
+      document.getElementById("card-exp-month").removeAttribute("name");
+      document.getElementById("card-exp-year").removeAttribute("name");
+      document.getElementById("card-cvc").removeAttribute("name");
+      // フォームの情報をサーバーサイドに送信
       document.getElementById("charge-form").submit();
     });
   });

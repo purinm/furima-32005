@@ -3,7 +3,9 @@ class ItemsController < ApplicationController
   before_action :set_items, only: [:edit, :show, :update ,:destroy]
 
   def index
+    # binding.pry
     @items = Item.all.order(created_at: :desc)
+    @purchase = Purchase.distinct.pluck(:item_id) #item_idカラムの値を全取得して重複値は削除して配列で返す
   end
 
   def new
@@ -20,6 +22,7 @@ class ItemsController < ApplicationController
   end
 
   def show
+    @purchase = Purchase.where(item_id: @item.id)
   end
 
   def edit

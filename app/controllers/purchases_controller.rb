@@ -1,41 +1,46 @@
 class PurchasesController < ApplicationController
-
+  before_action :authenticate_user!
+  
   def index
-    @purchase = Pucrhase.new
+    @item = Item.find(params[:item_id])
+    @purchase = Purchase.where(item_id: @item.id) #購入記録の売却すみitem_idカラムの値を探しておく
+    if @purchase.present? #購入記録にそのitem_idがあったら
+      redirect_to root_path
+    elsif current_user.id == @item.user.id  #出品者がURL入力から自品購入しようとしたら
+      redirect_to root_path
+    else
+      @purchase_address = PurchaseAddress.new
+    end
   end
-
-  def new
-    @address = Address.new
-  end
-
 
   def create
-    # binding.pry
-    @purchase = Purchase.new(purchase_params)
-    if @purchase.valid?
-      pay_item
-      @purchase.save
-      return redirect_to root_path
+    @purchase_address = PurchaseAddress.new(purchase_params())  
+    @item = Item.find(params[:item_id]) 
+    if  @purchase_address.valid?  #バリデーションの結果確認
+        pay_item #バリデーションパスしたら支払い
+        @purchase_address.save() #各テーブルへ保存
+        redirect_to root_path 
     else
-      render 'index'
+       render 'index' 
     end
   end
 
-
-  # サーバーサイドでトークンの情報を受け取れるようする
   private
   def purchase_params
-    params.require(:purchase).permit(:price).merge(token: params[:token])
+    params.require(:purchase_address).permit(:zip_code, :prefecture_id, :city, :street, :building, :phone_number,:token).merge( item_id: params[:item_id], user_id: current_user.id, token: params[:token])
+  end
+  
+  def pay_item
+    Payjp.api_key = ENV["PAYJP_SECRET_KEY"] # PAYJP側に決済情報を送るのに秘密鍵が必要,かぎを入れるクラス
+    Payjp::Charge.create(    # 決済に必要な情報を入れるクラス
+      amount: @item.cost,   
+      card: purchase_params[:token],   
+      currency: 'jpy'                 # 通貨の種類（日本円）
+    )
   end
 
-def pay_item
-  # 秘密鍵代入した環境変数を呼び込み
-  Payjp.api_key = ENV["PAYJP_SECRET_KEY"]
-  # Payjp.api_key = sk_test_9abbf0ba20da54166aa2d51e # 自身のPAY.JPテスト秘密鍵
-      Payjp::Charge.create(
-        amount: order_params[:price],  # 商品の値段
-        card: order_params[:token],    # カードトークン
-        currency: 'jpy'                 # 通貨の種類（日本円）
-      )
-    end
 end
+
+
+
+
