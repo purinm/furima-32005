@@ -2,17 +2,13 @@ class PurchaseAddress
  
   include ActiveModel::Model   # ActiveRecordを継承しform_withメソッド対応とバリデーション機能をプラスする
   
-  attr_accessor :zip_code, :prefecture_id, :city, :street,:building, :phone_number,:item_id,:user_id, :token,:number,:exp_month,:exp_year,:cvc
-  # テーブルにないカラム名全てを属性値として取得し値の更新を扱えるようにする
+  attr_accessor :zip_code, :prefecture_id, :city, :street,:building, :phone_number,:item_id,:user_id, :token
+  # テーブルにないカラム名全てを属性値として取得し値の更新を扱えるようにする  
   # Formオブジェクトのインスタンスを生成した際にform_withの引数として利用できる
 
   # クレジットカード情報、トークン、郵便番号・都道府県・市区町村・番地・電話番号が必須であること
   with_options  presence: true do
     validates :token
-    validates :number
-    validates :exp_month
-    validates :exp_year
-    validates :cvc
     validates :zip_code
     validates :prefecture_id
     validates :city

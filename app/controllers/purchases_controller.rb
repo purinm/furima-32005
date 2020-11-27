@@ -3,7 +3,7 @@ class PurchasesController < ApplicationController
   
   def index
     @item = Item.find(params[:item_id])
-    @purchase = Purchase.where(item_id: @item.id) #購入記録の売却すみitem_idカラムの値を探しておく
+    @purchase = Purchase.where(item_id: @item.id) #購入記録に売却すみitem_idカラムの値があるか探しておく
     if @purchase.present? #購入記録にそのitem_idがあったら
       redirect_to root_path
     elsif current_user.id == @item.user.id  #出品者がURL入力から自品購入しようとしたら
@@ -38,7 +38,6 @@ class PurchasesController < ApplicationController
       currency: 'jpy'                 # 通貨の種類（日本円）
     )
   end
-
 end
 
 

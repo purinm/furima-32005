@@ -12,33 +12,13 @@ RSpec.describe PurchaseAddress, type: :model do
       expect(@purchase_address).to be_valid
     end
     it '建物情報は空でも保存できること' do
-      @purchase_address.building = ""
+      @purchase_address.building = nil
       expect(@purchase_address).to be_valid
     end
     it 'tokenが空だと保存できないこと' do
       @purchase_address.token = nil
       @purchase_address.valid?
       expect(@purchase_address.errors.full_messages).to include("Token can't be blank")
-    end
-    it 'クレジットカード番号が空だと保存できないこと' do
-      @purchase_address.number= nil
-      @purchase_address.valid?
-      expect(@purchase_address.errors.full_messages).to include("Number can't be blank")
-    end
-    it 'クレジットカードの有効期限月が空だと保存できないこと' do
-      @purchase_address.exp_month = nil
-      @purchase_address.valid?
-      expect(@purchase_address.errors.full_messages).to include("Exp month can't be blank")
-    end
-    it 'クレジットカードの有効期限年が空だと保存できないこと' do
-      @purchase_address.exp_year = nil
-      @purchase_address.valid?
-      expect(@purchase_address.errors.full_messages).to include("Exp year can't be blank")
-    end
-    it 'クレジットカードのcvcが空だと保存できないこと' do
-      @purchase_address.cvc= nil
-      @purchase_address.valid?
-      expect(@purchase_address.errors.full_messages).to include("Cvc can't be blank")
     end
     it '郵便番号が空だと保存できないこと' do
       @purchase_address.zip_code = nil
