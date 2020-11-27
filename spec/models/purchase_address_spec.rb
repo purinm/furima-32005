@@ -26,9 +26,9 @@ RSpec.describe PurchaseAddress, type: :model do
       expect(@purchase_address.errors.full_messages).to include("Zip code can't be blank")
     end
     it '郵便番号がハイフンを含まないと保存できないこと' do
-      @purchase_address.zip_code = "2222222"
+      @purchase_address.zip_code = '2222222'
       @purchase_address.valid?
-      expect(@purchase_address.errors.full_messages).to include("Zip code is invalid. Include hyphen(-)")
+      expect(@purchase_address.errors.full_messages).to include('Zip code is invalid. Include hyphen(-)')
     end
     it '都道府県 に -- を選択すると保存できないこと' do
       @purchase_address.prefecture_id = 1
@@ -45,14 +45,14 @@ RSpec.describe PurchaseAddress, type: :model do
       @purchase_address.valid?
       expect(@purchase_address.errors.full_messages).to include("Street can't be blank")
     end
-   
+
     it '電話番号にはハイフンがあれば保存できないこと' do
-      @purchase_address.phone_number = "0-1234-5678"
+      @purchase_address.phone_number = '0-1234-5678'
       @purchase_address.valid?
-      expect(@purchase_address.errors.full_messages).to include("Phone number is invalid. Include hyphen(-)")
+      expect(@purchase_address.errors.full_messages).to include('Phone number is invalid. Include hyphen(-)')
     end
     it '電話番号には11桁以上であれば保存できないこと' do
-      @purchase_address.phone_number = "01234567890"
+      @purchase_address.phone_number = '01234567890'
       @purchase_address.valid?
     end
   end

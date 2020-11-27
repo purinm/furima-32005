@@ -6,6 +6,6 @@ FactoryBot.define do
     city { '東京都' }
     building { '東京ハイツ' }
     street { '東京ストリート' }
-    phone_number { Faker::Number.number(digits: 11)}
+    phone_number { Faker::Number.number(digits: 11) }
   end
 end
