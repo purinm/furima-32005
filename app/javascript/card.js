@@ -21,13 +21,12 @@ const pay = () => {
     // 第一引数：PAY.JP側に送るカードの情報＝カード情報のオブジェクト 
     // 第二引数：トークンが送付後に実行する処理を、即時関数で
     Payjp.createToken(card, (status, response) => {
-      // debugger;
+     
       if (status == 200) {  //送信成功したら
         const token = response.id;  // トークンの値を取得フォームに追加していく
         const renderDom = document.getElementById("charge-form");
         const tokenObj = `<input value=${token} name='token' type="hidden"> `;   // inputタグ作成トークンの値を非表示
         renderDom.insertAdjacentHTML("beforeend", tokenObj);
-      // debugger;
       }
       // クレジットカードの情報を削除
       document.getElementById("card-number").removeAttribute("name");

@@ -1,21 +1,18 @@
 class PurchasesController < ApplicationController
   before_action :authenticate_user!
+  before_action :find_item
 
   def index
-    @item = Item.find(params[:item_id])
     @purchase = Purchase.where(item_id: @item.id) # 購入記録に売却すみitem_idカラムの値があるか探しておく
-    if @purchase.present? # 購入記録にそのitem_idがあったら
-      redirect_to root_path
-    elsif current_user.id == @item.user.id # 出品者がURL入力から自品購入しようとしたら
-      redirect_to root_path
+    if @purchase.present? || current_user.id == @item.user.id  # 購入記録にそのitem_idがある、または出品者がURL入力から自品購入しようとしたら
+       redirect_to root_path
     else
-      @purchase_address = PurchaseAddress.new
+       @purchase_address = PurchaseAddress.new
     end
   end
 
   def create
     @purchase_address = PurchaseAddress.new(purchase_params)
-    @item = Item.find(params[:item_id])
     if @purchase_address.valid? # バリデーションの結果確認
       pay_item # バリデーションパスしたら支払い
       @purchase_address.save # 各テーブルへ保存
@@ -28,7 +25,11 @@ class PurchasesController < ApplicationController
   private
 
   def purchase_params
-    params.require(:purchase_address).permit(:zip_code, :prefecture_id, :city, :street, :building, :phone_number, :token).merge(item_id: params[:item_id], user_id: current_user.id, token: params[:token])
+    params.require(:purchase_address).permit(:zip_code, :prefecture_id, :city, :street, :building, :phone_number).merge(item_id: params[:item_id], user_id: current_user.id, token: params[:token])
+  end
+
+  def find_item
+    @item = Item.find(params[:item_id])
   end
 
   def pay_item
