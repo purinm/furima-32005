@@ -16,11 +16,10 @@ const pay = () => {
       exp_month: formData.get("purchase_address[exp_month]"),
       exp_year: `20${formData.get("purchase_address[exp_year]")}`,
     };
-    // console.log(card);
    
     // カード情報をPAY.JP側に送りトークン化
     // 第一引数：PAY.JP側に送るカードの情報＝カード情報のオブジェクト 
-    // 第二引数：PAY.JP側からトークンが送付された後に実行する処理を、アロー関数を用いた即時関数で記入
+    // 第二引数：トークンが送付後に実行する処理を、即時関数で
     Payjp.createToken(card, (status, response) => {
       // debugger;
       if (status == 200) {  //送信成功したら
