@@ -16,7 +16,6 @@ class PurchaseAddress
     validates :phone_number
     validates :user_id
     validates :item_id
-
   end
 
   # 電話番号にはハイフンは不要で、11桁以内であること（09012345678となる）
@@ -26,7 +25,7 @@ class PurchaseAddress
   validates :zip_code, format: { with: /\A[0-9]{3}-[0-9]{4}\z/, message: 'is invalid. Include hyphen(-)' }
 
   # 都道府県「 -- 」 1番目を選択しない
-  validates :prefecture_id, numericality: { other_than: 1, message: "Select" }
+  validates :prefecture_id, numericality: { other_than: 1, message: 'Select' }
 
   def save
     # 購入記録の情報を保存

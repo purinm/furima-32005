@@ -45,7 +45,7 @@ RSpec.describe PurchaseAddress, type: :model do
       it '都道府県 に -- を選択すると保存できないこと' do
         @purchase_address.prefecture_id = 1
         @purchase_address.valid?
-        expect(@purchase_address.errors.full_messages).to include("Prefecture Select")
+        expect(@purchase_address.errors.full_messages).to include('Prefecture Select')
       end
       it '市区町村が空だと保存できないこと' do
         @purchase_address.city = nil

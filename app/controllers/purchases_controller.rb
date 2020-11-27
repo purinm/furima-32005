@@ -4,10 +4,10 @@ class PurchasesController < ApplicationController
 
   def index
     @purchase = Purchase.where(item_id: @item.id) # 購入記録に売却すみitem_idカラムの値があるか探しておく
-    if @purchase.present? || current_user.id == @item.user.id  # 購入記録にそのitem_idがある、または出品者がURL入力から自品購入しようとしたら
-       redirect_to root_path
+    if @purchase.present? || current_user.id == @item.user.id # 購入記録にそのitem_idがある、または出品者がURL入力から自品購入しようとしたら
+      redirect_to root_path
     else
-       @purchase_address = PurchaseAddress.new
+      @purchase_address = PurchaseAddress.new
     end
   end
 
