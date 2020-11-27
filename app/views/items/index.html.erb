@@ -125,23 +125,17 @@
     <h2 class='title'>ピックアップカテゴリー</h2>
     <%= link_to '新規投稿商品', new_item_path, class: "subtitle" %>
     <ul class='item-lists'>
-
-
-      <% @items.each do |item|%>
+    
+     <% @items.each do |item|%>
       <li class='list'>
-
         <%= link_to item_path(item.id)  do %>
         <div class='item-img-content'>
           <%= image_tag item.image, class: "item-img" %>
-
-          <%# 商品が売れていればsold outを表示しましょう %>
-
-          <div class='sold-out'>
-            <span>Sold Out!!</span>
-          </div>
-
-          <%# //商品が売れていればsold outを表示しましょう %>
-
+          <% if @purchase.include?(item.id) %> <%#購入記録のitem_idの値とそれぞれのitem_idが同じとき %>
+            <div class='sold-out'>
+              <span>Sold Out!!</span>
+            </div>
+          <% end %>
         </div>
         <div class='item-info'>
           <h3 class='item-name'>
@@ -149,38 +143,36 @@
           </h3>
           <div class='item-price'>
             <span><%= item.cost %>円<br><%= item.delivery_fee.name %></span>
-
             <div class='star-btn'>
               <%= image_tag "star.png", class:"star-icon" %>
               <span class='star-count'>0</span>
             </div>
-          </div>
-        </div>
+         </div>
+       </div>
         <% end %>
       </li>
-      <% end %>
+    <% end %>
 
 
-      <% if @items.empty?%>
-      <li class='list'>
-        <%= link_to '#' do %>
-        <%= image_tag "https://s3-ap-northeast-1.amazonaws.com/mercarimaster/uploads/captured_image/content/10/a004.png", class: "item-img" %>
-        <div class='item-info'>
-          <h3 class='item-name'>
-            商品を出品してね！
-          </h3>
-          <div class='item-price'>
-            <span>99999999円<br>(税込み)</span>
-            <div class='star-btn'>
-              <%= image_tag "star.png", class:"star-icon" %>
-              <span class='star-count'>0</span>
-            </div>
+    <% if @items.empty?%>
+    <li class='list'>
+      <%= link_to '#' do %>
+      <%= image_tag "https://s3-ap-northeast-1.amazonaws.com/mercarimaster/uploads/captured_image/content/10/a004.png", class: "item-img" %>
+      <div class='item-info'>
+        <h3 class='item-name'>
+          商品を出品してね！
+        </h3>
+        <div class=''>
+          <span>99999999円<br>(税込み)</span>
+          <div class='star-btn'>
+            <%= image_tag "star.png", class:"star-icon" %>
+            <span class='star-count'>0</span>
           </div>
         </div>
-        <% end %>
-      </li>
+      </div>
       <% end %>
-
+    </li>
+    <% end %>
     </ul>
   </div>
   <%# /商品一覧 %>

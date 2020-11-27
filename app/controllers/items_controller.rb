@@ -1,9 +1,10 @@
 class ItemsController < ApplicationController
   before_action :authenticate_user!, except: [:index, :show]
-  before_action :set_items, only: [:edit, :show, :update ,:destroy]
+  before_action :set_items, only: [:edit, :show, :update, :destroy]
 
   def index
     @items = Item.all.order(created_at: :desc)
+    @purchase = Purchase.distinct.pluck(:item_id) # item_idカラムの値を全取得して重複値は削除して配列で返す
   end
 
   def new
@@ -20,6 +21,7 @@ class ItemsController < ApplicationController
   end
 
   def show
+    @purchase = Purchase.where(item_id: @item.id)
   end
 
   def edit
@@ -35,9 +37,7 @@ class ItemsController < ApplicationController
   end
 
   def destroy
-   if current_user.id == @item.user.id
-      @item.destroy
-    end
+    @item.destroy if current_user.id == @item.user.id
     redirect_to root_path
   end
 
