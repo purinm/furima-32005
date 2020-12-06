@@ -21,11 +21,14 @@ class ItemsController < ApplicationController
   end
 
   def show
-    @purchase = Purchase.where(item_id: @item.id)
+    # @purchase = Purchase.where(item_id: @item.id)
   end
 
   def edit
-    redirect_to root_path unless current_user.id == @item.user.id
+    # @purchase = Purchase.where(item_id: @item.id)
+    if current_user.id != @item.user.id || @purchase.present? 
+      redirect_to root_path 
+    end
   end
 
   def update
@@ -51,5 +54,7 @@ class ItemsController < ApplicationController
 
   def set_items
     @item = Item.find(params[:id])
+    @purchase = Purchase.where(item_id: @item.id)
+   
   end
 end
